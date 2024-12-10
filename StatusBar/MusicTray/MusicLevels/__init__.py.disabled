@@ -1,0 +1,83 @@
+from ignis.widgets import Widget
+from ignis.utils import exec_sh_async, FileMonitor, Poll
+from ignis.variable import Variable
+import os
+from gi.repository import GdkPixbuf  # type: ignore
+
+
+class MusicLevels(Widget.Box):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.barHeight = 16
+        self.spacing = 4
+        # self.homogenous = False
+        # self.vexpand = True
+        # self.hexpand = True
+        self.valign = "center"
+        self.halign = "start"
+        # self.style = "background-color: red;"
+
+        # red, green, blue, alpha
+        color = 0xEEFF2DFF
+
+        # Create blank 1x1 image
+        self.levelImage = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8, 4, 16)
+
+        # Fill entire image with color
+        self.levelImage.fill(color)
+
+        # os.remove("/tmp/cava-output")
+
+        self.cavaLevels = Variable([])
+        self.cava = exec_sh_async(
+            "/nix/store/ziam35zx2b1rg3bq71j6b7agdcg6fpag-home-manager-path/bin/cava -p cava-config"
+        )
+
+        self.processCavaOutput()
+        self.setupLevelBars()
+
+        Poll(100, lambda x: self.__handleCavaUpdate__())
+
+    def setupLevelBars(self):
+        self.levelBars = Variable({})
+        index = 0
+        for cavaLevel in self.cavaLevels.value:
+            self.levelBars.value.update(
+                {
+                    index: Widget.Picture(
+                        image=self.levelImage,
+                        width=4,
+                        height=1,
+                        content_fit="scale_down",
+                    )
+                }
+            )
+            index = index + 1
+
+    def __handleCavaUpdate__(self):
+        self.processCavaOutput()
+        self.updateLevelBars()
+
+        cavaBars = []
+        for cavaBarIndex, cavaBar in self.levelBars.value.items():
+            cavaBars.append(cavaBar)
+        self.child = cavaBars
+
+    def processCavaOutput(self):
+        with open("/tmp/cava-output", mode="r", buffering=-1) as cavaFile:
+            self.cavaLevels.value = cavaFile.readline().split(";")[:-1]
+
+    def updateLevelBars(self):
+        index = 0
+        for cavaLevel in self.cavaLevels.value:
+            if cavaLevel != "":
+                try:
+                    heightFactor = 1000 / self.barHeight
+                    newBarHeight = round(
+                        max(1, min(float(cavaLevel) / heightFactor, 16))
+                    )
+                    self.levelBars.value[index].height = newBarHeight
+                    self.levelBars.value[index].width = 4
+                    index = index + 1
+                except KeyError:
+                    pass

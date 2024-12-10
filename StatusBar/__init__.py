@@ -1,13 +1,14 @@
 from ignis.widgets import Widget
 from .StatusTray import StatusTray
 from .Workspaces import Workspaces
+from .MusicTray import MusicTray
 
 
 class StatusBar:
     def __init__(self):
         centerBox = Widget.CenterBox(
             vertical=False,
-            start_widget=Widget.Label(label="start"),
+            start_widget=MusicTray(),
             center_widget=Workspaces(),
             end_widget=StatusTray(),
         )
