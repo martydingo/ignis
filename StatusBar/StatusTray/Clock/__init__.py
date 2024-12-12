@@ -7,6 +7,7 @@ class Clock(Widget.EventBox):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.clock = Widget.Label()
+        self.name = "Clock"
         self.child = [self.clock]
         self.mode = "time"
 
@@ -34,13 +35,23 @@ class Clock(Widget.EventBox):
             case "date":
                 dayOfMonth = self.curTime.strftime("%d")
                 match list(dayOfMonth)[-1]:
-                    case 1:
-                        dayOfMonth = f"{str(dayOfMonth)}st"
-                    case 2:
-                        dayOfMonth = f"{str(dayOfMonth)}nd"
-                    case 3:
-                        dayOfMonth = f"{str(dayOfMonth)}rd"
+                    case "1":
+                        if dayOfMonth == "11":
+                            dayOfMonth = f"{str(dayOfMonth)}th"
+                        else:
+                            dayOfMonth = f"{str(dayOfMonth)}st"
+                    case "2":
+                        if dayOfMonth == "12":
+                            dayOfMonth = f"{str(dayOfMonth)}th"
+                        else:
+                            dayOfMonth = f"{str(dayOfMonth)}nd"
+                    case "3":
+                        if dayOfMonth == "13":
+                            dayOfMonth = f"{str(dayOfMonth)}th"
+                        else:
+                            dayOfMonth = f"{str(dayOfMonth)}rd"
                     case _:
+                        print(list(dayOfMonth)[-1])
                         dayOfMonth = f"{str(dayOfMonth)}th"
 
                 self.clock.set_label(

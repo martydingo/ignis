@@ -1,0 +1,230 @@
+@use "sass:color";
+
+/* EVERFOREST */
+$bg_dim: #232a2e; // Dimmed Background
+$bg0: #2d353b; // Default Background, Line Numbers Background, Signs Background, Status Line Background (inactive), Tab Line Label (active)
+$bg1: #343f44; // Cursor Line Background, Color Columns, Closed Folds Background, Status Line Background (active), Tab Line Background
+$bg2: #3d484d; // Popup Menu Background, Floating Window Background, Window Toolbar Background
+$bg3: #475258; // List Chars, Special Keys, Tab Line Label Background (inactive)
+$bg4: #4f585e; // Window Splits Separators, Whitespaces, Breaks
+$bg5: #56635f; // Not currently used
+$bg_visual: #543a48; // Visual Selection
+$bg_red: #514045; // Diff Deleted Line Background, Error Highlights
+$bg_green: #425047; // Diff Added Line Background, Hint Highlights
+$bg_blue: #3a515d; // Diff Changed Line Background, Info Highlights
+$bg_yellow: #4d4c43; // Warning Highlights
+$fg: #d3c6aa; // Default Foreground, Signs, [Treesitter: Constants, Variables, Function Parameters, Properties, Symbol Identifiers]
+$red: #e67e80; // Conditional Keywords, Loop Keywords, Exception Keywords, Inclusion Keywords, Uncategorised Keywords, Diff Deleted Signs, Error Messages, Error Signs
+$orange: #e69875; // Operator Keywords, Operators, Labels, Storage Classes, Composite Types, Enumerated Types, Tags, Title, Debugging Statements
+$yellow: #dbbc7f; // Types, Special Characters, Warning Messages, Warning Signs, [Treesitter: Modules, Namespaces]
+$green: #a7c080; // Function Names, Method Names, Strings, Characters, Hint Messages, Hint Signs, Search Highlights, [Treesitter: Constructors, Function Calls, Built-In Functions, Macro Functions, String Escapes, Regex Literals, Tag Delimiters, Non-Structured Text]
+$aqua: #83c092; // Constants, Macros, [Treesitter: Strings, Characters]
+$blue: #7fbbb3; // Identifiers, Uncategorised Special Symbols, Diff Changed Text Background, Info Messages, Info Signs, [Treesitter: Fields, Special Punctuation, Math Environments]
+$purple: #d699b6; // Booleans, Numbers, Preprocessors, [Treesitter: Built-In Constants, Built-In Variables, Macro-Defined Constants, Attributes/Annotations]
+$grey0: #7a8478; // Line Numbers, Fold Columns, Concealed Text, Foreground UI Elements
+$grey1: #859289; // Comments, Punctuation Delimiters, Closed Folds, Ignored/Disabled, UI Borders, Status Line Text
+$grey2: #9da9a0; // Cursor Line Number, Tab Line Label (inactive)
+$statusline1: #a7c080; // Menu Selection Background, Tab Line Label Background (active), Status Line Mode Indicator
+$statusline2: #d3c6aa; // Status Line Mode Indicator
+$statusline3: #e67e80; // Status Line Mode Indicator
+
+/* Gruvbox Material */
+// $bg_dim: #1b1b1b;
+// $bg0: #282828;
+// $bg1: #32302f;
+// $bg2: #32302f;
+// $bg3: #45403d;
+// $bg4: #45403d;
+// $bg5: #5a524c;
+// $bg_statusline1: #32302f;
+// $bg_statusline2: #3a3735;
+// $bg_statusline3: #504945;
+// $bg_diff_green: #34381b;
+// $bg_visual_green: #3b4439;
+// $bg_diff_red: #402120;
+// $bg_visual_red: #4c3432;
+// $bg_diff_blue: #0e363e;
+// $bg_visual_blue: #374141;
+// $bg_visual_yellow: #4f422e;
+// $bg_current_word: #3c3836;
+// $fg0: #d4be98;
+// $fg1: #ddc7a1;
+// $red: #ea6962;
+// $orange: #e78a4e;
+// $yellow: #d8a657;
+// $green: #a9b665;
+// $aqua: #89b482;
+// $blue: #7daea3;
+// $purple: #d3869b;
+// $bg_red: #ea6962;
+// $bg_green: #a9b665;
+// $bg_yellow: #d8a657;
+// $grey0: #7c6f64;
+// $grey1: #928374;
+// $grey2: #a89984;
+
+// window {
+//   background-color: unset;
+// }
+
+* {
+  // background-color: transparent;
+  background-color: unset;
+  // border: unset;
+  font-family: "Maple Mono NF";
+}
+
+#StatusBar {
+  margin-bottom: 2px;
+  border-radius: 0px;
+  // margin-bottom: 3px;
+  font-size: 11px;
+  background-color: color.adjust($bg_dim, $alpha: -0.9);
+}
+
+// #Workspaces {
+//   background-color: transparent;
+// }
+
+.WorkspaceButton {
+  .WorkspaceButtonLabelID {
+    font-size: 0.9em;
+    margin-right: 6px;
+    color: $bg_dim;
+
+    padding: 4px 4px;
+    // border: $red 2px;
+  }
+  label {
+    margin-left: 2px;
+    // margin-top: 0em;
+    margin-top: -4px;
+    margin-bottom: -4px;
+    margin-right: -8px;
+    margin-left: 4px;
+    font-size: 32px;
+  }
+
+  // border-radius: 100px;
+  // background-color: color.adjust($bg0, $alpha: -0.4);
+  padding: 0px 6px;
+  margin-left: 5px;
+  margin-right: 4px;
+}
+
+.WorkspaceButton:not(.active) .WorkspaceButtonLabelID {
+  color: $grey0;
+}
+
+.WorkspaceButton.active {
+  padding: 0px 8px;
+  background-color: color.adjust($green, $alpha: -0.4);
+  // background-color: $bg3;
+  label {
+    color: $bg_dim;
+  }
+}
+
+.WorkspaceButton:hover {
+  background-color: color.adjust($green, $alpha: -0.3);
+  .WorkspaceButtonLabelID {
+    color: $bg_dim;
+  }
+  label {
+    color: $bg_dim;
+  }
+}
+
+#Clock {
+  font-size: 16px;
+  // font-family: "ProggyClean Nerd Font";
+  label {
+    margin-right: 8px;
+    // border-radius: 12px;
+    background-color: color.adjust($orange, $alpha: -0.4);
+    color: $bg_dim;
+    padding: 0px 8px;
+  }
+}
+
+.MediaPositionLabel {
+  font-size: 0.95em;
+}
+
+.MusicMeta {
+  padding-top: 2px;
+  font-size: 1em;
+  padding-left: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba($bg_dim, 0.9) 0%,
+    rgba($bg_dim, 0.4) 50%,
+    rgba($bg_dim, 0.9) 100%
+  );
+  color: $fg;
+}
+
+// .MusicMetaCoverArt {
+//   // margin-left: 8px;
+//   // min-width:
+//   // // background-size: 200%;
+//   // min-width: 11rem;
+//   // padding: 8px;
+//   // // padding-left: 8px;
+//   // background-repeat: no-repeat;
+//   // background-position: bottom;
+//   // background: linear-gradient(
+//   //   90deg,
+//   //   rgba($bg0, 0.9) 0%,
+//   //   rgba($bg0, 0.4) 50%,
+//   //   rgba($bg0, 0.9) 100%
+//   // );
+// }
+.MusicMetaCoverArt {
+  background-position: center;
+}
+.MusicMetaOverlay {
+  background-repeat: no-repeat;
+  min-width: 13.6rem;
+}
+.MusicMetaScale {
+  margin-top: 4px;
+  margin-left: 8px;
+  > trough {
+    background-color: $green;
+    > slider {
+      background-color: $bg1;
+      opacity: 0;
+    }
+    > highlight {
+      background-color: red;
+    }
+  }
+}
+
+levelbar {
+  > trough > block.empty {
+    background-color: $bg_dim;
+    border-radius: 100px;
+  }
+  > trough > block.filled {
+    background-color: $orange;
+    border-radius: 100px;
+  }
+}
+
+scale {
+  trough > slider {
+    background-color: red;
+  }
+}
+
+// .MusicLevels {
+//   margin-left: 8px;
+//   padding-top: 2px;
+// }
+
+.mediaLabelContainerArtistAlbum {
+  padding-top: 2px;
+  font-style: italic;
+}

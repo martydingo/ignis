@@ -12,7 +12,7 @@ class MusicLevels(Widget.Box):
         # self.homogenous = False
         # self.vexpand = True
         # self.hexpand = True
-        self.valign = "baseline"
+        # self.valign = "baseline"
         self.halign = "start"
         # self.style = "background-color: red;"
 
@@ -20,6 +20,8 @@ class MusicLevels(Widget.Box):
         self.cava = exec_sh_async(
             "/nix/store/ziam35zx2b1rg3bq71j6b7agdcg6fpag-home-manager-path/bin/cava -p cava-config"
         )
+
+        self.css_classes = ["MusicLevels"]
 
         self.processCavaOutput()
         self.setupLevelBars()
@@ -34,11 +36,12 @@ class MusicLevels(Widget.Box):
                 {
                     index: Gtk.LevelBar(
                         width_request=4,
-                        height_request=16,
+                        height_request=8,
                         max_value=1000,
                         min_value=0,
                         orientation="vertical",
                         inverted=True,
+                        css_classes=["MusicLevelBar"],
                         # height=1,
                         # content_fit="scale_down",
                     )

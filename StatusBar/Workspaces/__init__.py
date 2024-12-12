@@ -10,7 +10,7 @@ import json
 class Workspaces(Widget.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
+        self.name = "Workspaces"
         self.hyprland = HyprlandService.get_default()
 
         self.workspaceButtons = Variable({})
@@ -30,7 +30,18 @@ class Workspaces(Widget.Box):
 
     def updateWorkspaceButtons(self):
         for workspace in self.hyprland.workspaces:
-            self.workspaceButtons.value.update({workspace["id"]: Widget.Button()})
+            css_classes = ["WorkspaceButton"]
+            if self.hyprland.active_workspace["id"] == workspace["id"]:
+                css_classes.append("active")
+            self.workspaceButtons.value.update(
+                {
+                    workspace["id"]: Widget.Button(
+                        name=f"WorkspaceButton-{str(workspace["id"])}",
+                        css_classes=css_classes,
+                        on_click=lambda event: self.handleWorkspaceButtonClick(event),
+                    )
+                }
+            )
 
         for workspaceId, workspaceButton in self.workspaceButtons.value.items():
             match = False
@@ -45,18 +56,26 @@ class Workspaces(Widget.Box):
             if type(workspaceButton) == dict:
                 pass
             else:
-                labelBox = Widget.Box(spacing=4)
-                labelBoxChildren = [Widget.Label(label=f"{workspaceId} |")]
+                labelBox = Widget.Box()
+                labelBoxChildren = [
+                    Widget.Label(
+                        css_classes=["WorkspaceButtonLabelID"], label=f"{workspaceId} |"
+                    )
+                ]
                 currentClients = json.loads(self.hyprland.send_command("j/clients"))
                 for client in currentClients:
                     if client["workspace"]["id"] == workspaceId:
-                        if WorkspaceIcons[client["class"]]:
+                        try:
                             labelBoxChildren.append(
                                 Widget.Label(
                                     label=WorkspaceIcons[client["class"]] + " "
                                 )
                             )
-                        else:
+                        except KeyError:
                             labelBoxChildren.append(Widget.Label(label=client["class"]))
                 labelBox.child = labelBoxChildren
                 workspaceButton.child = labelBox
+
+    def handleWorkspaceButtonClick(self, event):
+        callingWorkspaceId = event.name.split("-")[-1]
+        self.hyprland.switch_to_workspace(callingWorkspaceId)
